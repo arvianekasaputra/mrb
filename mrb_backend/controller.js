@@ -76,6 +76,16 @@ exports.transaksi = function(req, res) {
     });
 };
 
+exports.transaksiuser = function(req, res) {
+    connection.query('SELECT t.id_transaksi, t.tgl, r.nm_ruang, u.display_nm, t.activity, s.nm_snack, t.additional FROM transaksi t JOIN `user` u ON t.id_user = u.id_user JOIN ruang r ON t.id_ruang = r.id_ruang JOIN snack s ON t.id_snack = s.id_snack', function (error, rows, fields){
+        if(error){
+            console.log(error)
+        } else{
+            response.ok(rows, res)
+        }
+    });
+};
+
 exports.id = function(req, res) {
     connection.query('SELECT * FROM user WHERE id = ?', [req.query.id], function (error, rows, fields){
         if(error){

@@ -47,6 +47,9 @@ module.exports = function(app) {
     app.route('/transaksi')
         .get(cekLogin, cekAdmin, todoList.transaksi);
 
+    app.route('/transaksiuser')
+        .get(cekLogin, todoList.transaksi);
+
     app.route('/id')
         .get(todoList.id);
 
