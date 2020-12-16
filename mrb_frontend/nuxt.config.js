@@ -46,8 +46,13 @@ export default {
   axios: {
     proxy: true,
   },
+  // Nuxt development server host (https://nuxtjs.org/faq/host-port#via-a-nuxt-config-in-the-packagejson)
+  server: {
+    port: 3030, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
   proxy: {
-    '/api/': { target: 'http://localhost:4000', pathRewrite: { '^/api/': '' } },
+    '/api/': { target: 'http://localhost:4040', pathRewrite: { '^/api/': '' } },
   },
   auth: {
     strategies: {
