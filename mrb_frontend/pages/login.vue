@@ -1,10 +1,12 @@
 <template>
-  <form class="text-center formku1">
-    <v-text-field v-model="name" label="Name" required></v-text-field>
-    <v-text-field v-model="password" label="Password" required></v-text-field>
-    <v-btn class="mr-4" @click="login"> Login </v-btn>
-    <v-btn @click="clear"> Clear </v-btn>
-  </form>
+  <v-row justify="center">
+    <form class="text-center formku1">
+      <v-text-field v-model="name" label="Name" required></v-text-field>
+      <v-text-field v-model="password" label="Password" required></v-text-field>
+      <v-btn class="mr-4" @click="login"> Login </v-btn>
+      <v-btn @click="clear"> Clear </v-btn>
+    </form>
+  </v-row>
 </template>
 
 <script>
@@ -41,7 +43,7 @@ export default {
 </script>
 
 <style>
-#formku1 {
-  width: 150px;
+.formku1 {
+  width: 400px;
 }
 </style>

@@ -67,7 +67,7 @@ exports.snack = function(req, res) {
 };
 
 exports.transaksi = function(req, res) {
-    connection.query('SELECT t.id_transaksi, t.tgl, r.nm_ruang, u.display_nm, t.activity, s.nm_snack, t.additional FROM transaksi t JOIN `user` u ON t.id_user = u.id_user JOIN ruang r ON t.id_ruang = r.id_ruang JOIN snack s ON t.id_snack = s.id_snack', function (error, rows, fields){
+    connection.query('SELECT t.id_transaksi, t.tgl, r.id_ruang, r.nm_ruang, u.display_nm, t.activity, s.id_snack, s.nm_snack, t.additional FROM transaksi t JOIN `user` u ON t.id_user = u.id_user JOIN ruang r ON t.id_ruang = r.id_ruang JOIN snack s ON t.id_snack = s.id_snack', function (error, rows, fields){
         if(error){
             console.log(error)
         } else{
@@ -77,7 +77,7 @@ exports.transaksi = function(req, res) {
 };
 
 exports.transaksiuser = function(req, res) {
-    connection.query('SELECT t.id_transaksi, t.tgl, r.nm_ruang, u.display_nm, t.activity, s.nm_snack, t.additional FROM transaksi t JOIN `user` u ON t.id_user = u.id_user JOIN ruang r ON t.id_ruang = r.id_ruang JOIN snack s ON t.id_snack = s.id_snack', function (error, rows, fields){
+    connection.query('SELECT t.id_transaksi, t.tgl, r.id_ruang, r.nm_ruang, u.display_nm, t.activity, s.id_snack, s.nm_snack, t.additional FROM transaksi t JOIN `user` u ON t.id_user = u.id_user JOIN ruang r ON t.id_ruang = r.id_ruang JOIN snack s ON t.id_snack = s.id_snack', function (error, rows, fields){
         if(error){
             console.log(error)
         } else{

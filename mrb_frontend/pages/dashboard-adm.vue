@@ -3,7 +3,7 @@
     <v-card-title> </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="transaksi"
+      :items="(transaksi, untukTanggal)"
       :search="search"
       sort-by="tgl"
     >
@@ -159,7 +159,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
-    tangal: new Date().toISOString().substr(0, 10),
+    // tangal: new Date().toISOString().substr(0, 10),
     menu: false,
     tgl: '',
     search: '',
@@ -200,6 +200,22 @@ export default {
     },
   }),
 
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1
+        ? 'Buat Ticket Booking'
+        : 'Ubah Ticket Booking'
+    },
+    untukTanggal() {
+      let i = 1
+      return this.transaksi.map((v) => {
+        v.tgl = this.$dateFns.format(new Date(v.tgl || null), 'yyyy-MM-dd')
+        v.nomor = i++
+        return v
+      })
+    },
+  },
+
   watch: {
     dialog(val) {
       val || this.close()
@@ -209,13 +225,9 @@ export default {
     },
   },
 
-  async mounted() {
-    const apiruang = await this.$axios.get('/api/ruang')
-    this.ruang = apiruang.data.values
-
-    const apisnack = await this.$axios.get('/api/snack')
-    this.snack = apisnack.data.values
-
+  mounted() {
+    this.loadRuang()
+    this.loadSnack()
     this.loadTransaksi()
   },
 
@@ -225,13 +237,32 @@ export default {
 
   methods: {
     initialize() {
-      this.transaksi = []
-      this.ruang = []
+      this.transaksi = [
+        {
+          id_transaksi: '',
+          tgl: '',
+          display_nm: '',
+          activity: '',
+          additional: '',
+        },
+      ]
+      this.ruang = [{ nm_ruang: '' }]
+      this.snack = [{ nm_snack: '' }]
     },
 
     async loadTransaksi() {
       const apitransaksi = await this.$axios.get('/api/transaksi')
       this.transaksi = apitransaksi.data.values
+    },
+
+    async loadRuang() {
+      const apiruang = await this.$axios.get('/api/ruang')
+      this.ruang = apiruang.data.values
+    },
+
+    async loadSnack() {
+      const apisnack = await this.$axios.get('/api/snack')
+      this.snack = apisnack.data.values
     },
 
     editItem(item) {
