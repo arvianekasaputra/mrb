@@ -63,7 +63,7 @@ module.exports = function(app) {
         .put(todoList.updateUsers);
         
     app.route('/transaksi')
-        .post(cekLogin, cekAdmin, todoList.createTransaksi);
+        .post(cekLogin, todoList.createTransaksi);
     
     app.route('/transaksi')
         .put(cekLogin, cekAdmin, todoList.updateTransaksi);

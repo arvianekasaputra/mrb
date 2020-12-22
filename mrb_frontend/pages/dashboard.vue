@@ -3,7 +3,7 @@
     <v-card-title> </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="transaksi"
+      :items="(transaksi, untukTanggal)"
       :search="search"
       sort-by="tgl"
     >
@@ -199,6 +199,17 @@ export default {
     },
   }),
 
+  computed: {
+    untukTanggal() {
+      let i = 1
+      return this.transaksi.map((v) => {
+        v.tgl = this.$dateFns.format(new Date(v.tgl || null), 'yyyy-MM-dd')
+        v.nomor = i++
+        return v
+      })
+    },
+  },
+
   watch: {
     dialog(val) {
       val || this.close()
@@ -224,8 +235,17 @@ export default {
 
   methods: {
     initialize() {
-      this.transaksi = []
-      this.ruang = []
+      this.transaksi = [
+        {
+          id_transaksi: '',
+          tgl: '',
+          display_nm: '',
+          activity: '',
+          additional: '',
+        },
+      ]
+      this.ruang = [{ nm_ruang: '' }]
+      this.snack = [{ nm_snack: '' }]
     },
 
     async loadTransaksi() {
@@ -275,7 +295,7 @@ export default {
     async save() {
       if (this.editedIndex > -1) {
         // Object.assign(this.transaksi[this.editedIndex], this.editedItem)
-        const apiupdatetransaksi = await this.$axios.put('/api/transaksiuser', {
+        const apiupdatetransaksi = await this.$axios.put('/api/transaksi', {
           tgl: this.editedItem.tgl,
           id_ruang: this.editedItem.id_ruang,
           id_user: IDUser,
@@ -290,20 +310,15 @@ export default {
           this.close()
         }
       } else {
-        // this.transaksi.push(this.editedItem)
-        const apicreatetransaksi = await this.$axios.post(
-          '/api/transaksiuser',
-          {
-            tgl: this.editedItem.tgl,
-            id_ruang: this.editedItem.id_ruang,
-            id_user: IDUser,
-            activity: this.editedItem.activity,
-            id_snack: this.editedItem.id_snack,
-            additional: this.editedItem.additional,
-            id_transaksi: this.editedItem.id_transaksi,
-          }
-        )
-        // window.alert(apiupdatetransaksi.data.values)
+        const apicreatetransaksi = await this.$axios.post('/api/transaksi', {
+          tgl: this.editedItem.tgl,
+          id_ruang: this.editedItem.id_ruang,
+          id_user: IDUser,
+          activity: this.editedItem.activity,
+          id_snack: this.editedItem.id_snack,
+          additional: this.editedItem.additional,
+          id_transaksi: this.editedItem.id_transaksi,
+        })
         if (apicreatetransaksi.data.status === 200) {
           this.loadTransaksi()
           this.close()
