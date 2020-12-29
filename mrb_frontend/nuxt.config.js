@@ -81,7 +81,17 @@ export default {
       user: '/',
     },
   },
-
+  pwa: {
+    manifest: {
+      name: 'mrb: meeting room booking',
+      short_name: 'mrb',
+      theme_color: '#ffffff',
+      author: 'Arvian',
+    },
+    icon: {
+      fileName: 'mrbicon.png',
+    },
+  },
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],

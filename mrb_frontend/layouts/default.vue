@@ -60,7 +60,7 @@ export default {
       drawer: false,
       fixed: false,
       items: [
-        {
+        /* {
           admin: [0, 1],
           icon: 'mdi-apps',
           title: 'Welcome',
@@ -71,7 +71,7 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'Inspire',
           to: '/inspire',
-        },
+        }, */
         {
           admin: [0],
           icon: 'mdi-home',
