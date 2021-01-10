@@ -67,7 +67,7 @@ exports.snack = function(req, res) {
 };
 
 exports.transaksi = function(req, res) {
-    connection.query('SELECT t.id_transaksi, t.tgl, r.id_ruang, r.nm_ruang, u.display_nm, t.activity, s.id_snack, s.nm_snack, t.additional FROM transaksi t JOIN `user` u ON t.id_user = u.id_user JOIN ruang r ON t.id_ruang = r.id_ruang JOIN snack s ON t.id_snack = s.id_snack', function (error, rows, fields){
+    connection.query('SELECT t.id_transaksi, t.tgl, r.id_ruang, r.nm_ruang, u.id_user, u.display_nm, t.activity, s.id_snack, s.nm_snack, t.additional FROM transaksi t JOIN `user` u ON t.id_user = u.id_user JOIN ruang r ON t.id_ruang = r.id_ruang JOIN snack s ON t.id_snack = s.id_snack', function (error, rows, fields){
         if(error){
             console.log(error)
         } else{
@@ -116,12 +116,12 @@ exports.findUsers = function(req, res) {
 
 exports.createUsers = function(req, res) {
     var user = req.body.user;
-    var password = req.body.password;
+    var password = 'mrb'+req.body.password+'king';
     var display_nm = req.body.display_nm;
     var email = req.body.email;
     var cost_center = req.body.cost_center;
 
-    connection.query('INSERT INTO user (user, password, display_nm, email, cost_center) values (?,?,?,?,?)',
+    connection.query('INSERT INTO user (user, password, display_nm, email, cost_center, is_admin) values (?,md5(?),?,?,?,0)',
     [ user, password, display_nm, email, cost_center ], 
     function (error, rows, fields){
         if(error){
@@ -211,7 +211,7 @@ exports.deleteUsers = function(req, res) {
 };
 
 exports.deleteTransaksi = function(req, res) {
-    var id_transaksi = req.body.id_transaksi;
+    var id_transaksi = req.params.id_transaksi;
 
     connection.query('DELETE FROM transaksi WHERE id_transaksi = ?',
     [ id_transaksi ], 

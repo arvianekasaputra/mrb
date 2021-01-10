@@ -52,6 +52,7 @@
                         </template>
                         <v-date-picker
                           v-model="editedItem.tgl"
+                          :min="currentDate"
                           no-title
                           scrollable
                         >
@@ -79,12 +80,6 @@
                         required
                         >}</v-select
                       >
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.display_nm"
-                        label="Pengguna"
-                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
@@ -153,8 +148,6 @@
 </template>
 
 <script>
-const IDUser = 2
-
 export default {
   data: () => ({
     dialog: false,
@@ -207,6 +200,14 @@ export default {
         v.nomor = i++
         return v
       })
+    },
+    currentDate() {
+      const date = new Date()
+      let month = date.getMonth() + 1
+      if (month < 10) {
+        month = '0' + month
+      }
+      return date.getFullYear() + '-' + month + '-' + date.getDate()
     },
   },
 
@@ -298,7 +299,7 @@ export default {
         const apiupdatetransaksi = await this.$axios.put('/api/transaksi', {
           tgl: this.editedItem.tgl,
           id_ruang: this.editedItem.id_ruang,
-          id_user: IDUser,
+          id_user: this.$auth.user.id_user,
           activity: this.editedItem.activity,
           id_snack: this.editedItem.id_snack,
           additional: this.editedItem.additional,
@@ -313,7 +314,7 @@ export default {
         const apicreatetransaksi = await this.$axios.post('/api/transaksi', {
           tgl: this.editedItem.tgl,
           id_ruang: this.editedItem.id_ruang,
-          id_user: IDUser,
+          id_user: this.$auth.user.id_user,
           activity: this.editedItem.activity,
           id_snack: this.editedItem.id_snack,
           additional: this.editedItem.additional,

@@ -71,6 +71,6 @@ module.exports = function(app) {
     app.route('/users')
         .delete(todoList.deleteUsers);
 
-    app.route('/transaksi')
-        .post(cekLogin, cekAdmin, todoList.deleteTransaksi);
+    app.route('/transaksi/:id_transaksi')
+        .delete(cekLogin, cekAdmin, todoList.deleteTransaksi);
 };

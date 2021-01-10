@@ -52,6 +52,7 @@
                         </template>
                         <v-date-picker
                           v-model="editedItem.tgl"
+                          :min="currentDate"
                           no-title
                           scrollable
                         >
@@ -82,8 +83,12 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.display_nm"
+                        v-model="editedItem.id_user"
                         label="Pengguna"
+                        :items="user"
+                        item-text="display_nm"
+                        item-value="id_user"
+                        disabled
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
@@ -153,8 +158,6 @@
 </template>
 
 <script>
-const IDUser = 2
-
 export default {
   data: () => ({
     dialog: false,
@@ -175,12 +178,14 @@ export default {
     transaksi: [],
     ruang: [],
     snack: [],
+    user: [],
     editedIndex: -1,
     editedItem: {
       id_transaksi: '',
       tgl: '',
       id_ruang: '',
       nm_ruang: '',
+      id_user: '',
       display_nm: '',
       activity: '',
       id_snack: '',
@@ -192,6 +197,7 @@ export default {
       tgl: '',
       id_ruang: '',
       nm_ruang: '',
+      id_user: '',
       display_nm: '',
       activity: '',
       id_snack: '',
@@ -213,6 +219,14 @@ export default {
         v.nomor = i++
         return v
       })
+    },
+    currentDate() {
+      const date = new Date()
+      let month = date.getMonth() + 1
+      if (month < 10) {
+        month = '0' + month
+      }
+      return date.getFullYear() + '-' + month + '-' + date.getDate()
     },
   },
 
@@ -278,9 +292,9 @@ export default {
     },
 
     async deleteItemConfirm() {
-      const apideletetransaksi = await this.$axios.post('/api/transaksi', {
-        id_transaksi: this.editedItem.id_transaksi,
-      })
+      const apideletetransaksi = await this.$axios.delete(
+        '/api/transaksi/' + this.editedItem.id_transaksi
+      )
       window.alert(apideletetransaksi.data.values)
       if (apideletetransaksi.data.status === 200) {
         this.loadTransaksi()
@@ -310,7 +324,7 @@ export default {
         const apiupdatetransaksi = await this.$axios.put('/api/transaksi', {
           tgl: this.editedItem.tgl,
           id_ruang: this.editedItem.id_ruang,
-          id_user: IDUser,
+          id_user: this.editedItem.id_user,
           activity: this.editedItem.activity,
           id_snack: this.editedItem.id_snack,
           additional: this.editedItem.additional,
@@ -326,7 +340,7 @@ export default {
         const apicreatetransaksi = await this.$axios.post('/api/transaksi', {
           tgl: this.editedItem.tgl,
           id_ruang: this.editedItem.id_ruang,
-          id_user: IDUser,
+          id_user: this.$auth.user.id_user,
           activity: this.editedItem.activity,
           id_snack: this.editedItem.id_snack,
           additional: this.editedItem.additional,
