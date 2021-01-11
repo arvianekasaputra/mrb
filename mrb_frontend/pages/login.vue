@@ -22,7 +22,7 @@
             ></v-text-field>
             <v-btn class="mr-4" @click="login"> Login </v-btn>
             <v-btn class="mr-4" @click="clear"> Clear </v-btn>
-            <v-dialog v-model="regist">
+            <v-dialog v-model="regist" max-width="500px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   class="mr-4"
